@@ -21,7 +21,6 @@ const detectorConfig: MediaPipeFaceMeshTfjsModelConfig = {
     refineLandmarks: true
     
 }
-const detector = await faceLandmarksDetection.createDetector(model, detectorConfig);
 const CVideoPlayer = ({
     track
 }: CVideoPlayerProps): JSX.Element => {
@@ -31,7 +30,7 @@ const CVideoPlayer = ({
 
     useEffect(() => {
       
-        async function drawFrame() {
+        async function drawFrame(detector: faceLandmarksDetection.FaceLandmarksDetector) {
             if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
             const ctx = streamCanvasImageRef.current.getContext('2d');
             const ctx2 = streamCanvasFaceRef.current.getContext('2d');
@@ -49,7 +48,7 @@ const CVideoPlayer = ({
                 ctx2.stroke();
             }
            
-            requestAnimationFrame(drawFrame);
+            requestAnimationFrame(() => drawFrame(detector));
         }
         async function initStream() {
             const videoTrack = await AgoraRTC.createCameraVideoTrack();
@@ -61,6 +60,8 @@ const CVideoPlayer = ({
     
             if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
             streamVideoRef.current.srcObject = mediaStream;
+
+            const detector = await faceLandmarksDetection.createDetector(model, detectorConfig);
             streamVideoRef.current.onloadedmetadata = () => {
                 if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
                 // Video dimensions are available
@@ -69,7 +70,7 @@ const CVideoPlayer = ({
 
                 streamCanvasFaceRef.current.width = streamVideoRef.current.videoWidth;
                 streamCanvasFaceRef.current.height = streamVideoRef.current.videoHeight;
-                drawFrame()
+                drawFrame(detector)
             }
         }
         initStream()
