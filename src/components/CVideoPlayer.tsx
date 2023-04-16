@@ -1,6 +1,6 @@
 import { AgoraVideoPlayer } from "agora-rtc-react";
 import AgoraRTC, { ICameraVideoTrack, IRemoteVideoTrack } from "agora-rtc-sdk-ng";
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
 import { MediaPipeFaceMeshTfjsModelConfig } from "@tensorflow-models/face-landmarks-detection";
 import backend from '@tensorflow/tfjs-backend-webgl';
@@ -27,11 +27,20 @@ const CVideoPlayer = ({
     const streamVideoRef = useRef<HTMLVideoElement | null>(null);
     const streamCanvasImageRef = useRef<HTMLCanvasElement | null>(null);
     const streamCanvasFaceRef = useRef<HTMLCanvasElement | null>(null);
+    const [detector, setDetector] = useState<faceLandmarksDetection.FaceLandmarksDetector | null>(null);
+
+    useEffect(() => {
+        async function createDetector() {
+            const newDetector = await faceLandmarksDetection.createDetector(model, detectorConfig);
+            setDetector(newDetector)
+        }
+        createDetector();
+    }, [])
 
     useEffect(() => {
       
-        async function drawFrame(detector: faceLandmarksDetection.FaceLandmarksDetector) {
-            if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
+        async function drawFrame() {
+            if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current || !detector) return;
             const ctx = streamCanvasImageRef.current.getContext('2d');
             const ctx2 = streamCanvasFaceRef.current.getContext('2d');
             if(!ctx || !ctx2) return;
@@ -48,7 +57,7 @@ const CVideoPlayer = ({
                 ctx2.stroke();
             }
            
-            requestAnimationFrame(() => drawFrame(detector));
+            requestAnimationFrame(drawFrame);
         }
         async function initStream() {
             const videoTrack = await AgoraRTC.createCameraVideoTrack();
@@ -58,10 +67,8 @@ const CVideoPlayer = ({
             console.log(mediaStream)
             // await client.publish(mediaStream as any);
     
-            if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
+            if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current || !detector) return;
             streamVideoRef.current.srcObject = mediaStream;
-
-            const detector = await faceLandmarksDetection.createDetector(model, detectorConfig);
             streamVideoRef.current.onloadedmetadata = () => {
                 if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
                 // Video dimensions are available
@@ -70,11 +77,11 @@ const CVideoPlayer = ({
 
                 streamCanvasFaceRef.current.width = streamVideoRef.current.videoWidth;
                 streamCanvasFaceRef.current.height = streamVideoRef.current.videoHeight;
-                drawFrame(detector)
+                drawFrame()
             }
         }
         initStream()
-      }, [streamVideoRef.current, streamCanvasImageRef.current, track, streamCanvasFaceRef.current])
+      }, [streamVideoRef.current, streamCanvasImageRef.current, track, streamCanvasFaceRef.current, detector])
 
     return (
         <div className="relative">
