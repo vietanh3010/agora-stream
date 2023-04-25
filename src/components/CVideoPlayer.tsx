@@ -27,61 +27,61 @@ const socketOptions = {
         framespersecond: 30, 
         audioBitrate: 22050 
     } };
-const socket = io(SOCKET_ADDRESS, socketOptions);
-function connectServer() {
-    socket.on('connect_timeout', (timeout) => {
-        console.warn("state on connection timeout= " + timeout);
-    });
-    socket.on('error', (error) => {
-        console.warn("state on connection error= " + error);
-    });
+// const socket = io(SOCKET_ADDRESS, socketOptions);
+// function connectServer() {
+//     socket.on('connect_timeout', (timeout) => {
+//         console.warn("state on connection timeout= " + timeout);
+//     });
+//     socket.on('error', (error) => {
+//         console.warn("state on connection error= " + error);
+//     });
 
-    socket.on('connect_error', function () {
-        console.warn("state on connection error= ");
-    });
+//     socket.on('connect_error', function () {
+//         console.warn("state on connection error= ");
+//     });
 
-    socket.on('message', function (m) {
-        // console.log('SERVER:' + m);
-    });
+//     socket.on('message', function (m) {
+//         // console.log('SERVER:' + m);
+//     });
 
-    socket.on('fatal', function (m) {
-        console.warn("fatal socket error!!", m);
-    });
+//     socket.on('fatal', function (m) {
+//         console.warn("fatal socket error!!", m);
+//     });
 
-    socket.on('ffmpeg_stderr', function (m) {
-        //this is the ffmpeg output for each frame
-        // console.log('FFMPEG:' + m);
-    });
+//     socket.on('ffmpeg_stderr', function (m) {
+//         //this is the ffmpeg output for each frame
+//         // console.log('FFMPEG:' + m);
+//     });
 
-    socket.on('disconnect', function (reason) {
-        // console.log('ERROR: server disconnected!' + reason);
-        connectServer();
-    });
-}
+//     socket.on('disconnect', function (reason) {
+//         // console.log('ERROR: server disconnected!' + reason);
+//         connectServer();
+//     });
+// }
 
-function startStream(stream: MediaStream) {
-        socket.emit('config_rtmpDestination', `rtmp://localhost:1935/live`);
-        socket.emit('start', 'start');
-        const mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start(30);
-        mediaRecorder.onstop = function (e) {
-            console.log("stopped!");
-            // console.log(e);
-        }
-        mediaRecorder.onpause = function (e) {
-            console.log("media recorder paused!!");
-            // console.log(e);
-        }
+// function startStream(stream: MediaStream) {
+//         socket.emit('config_rtmpDestination', `rtmp://localhost:1935/live`);
+//         socket.emit('start', 'start');
+//         const mediaRecorder = new MediaRecorder(stream);
+//         mediaRecorder.start(30);
+//         mediaRecorder.onstop = function (e) {
+//             console.log("stopped!");
+//             // console.log(e);
+//         }
+//         mediaRecorder.onpause = function (e) {
+//             console.log("media recorder paused!!");
+//             // console.log(e);
+//         }
 
-        mediaRecorder.onerror = function (event: any) {
-            let error = event.error;
-            // console.log("error", error.name);
-        };
+//         mediaRecorder.onerror = function (event: any) {
+//             let error = event.error;
+//             // console.log("error", error.name);
+//         };
 
-        mediaRecorder.ondataavailable = function (e) {
-            socket.emit("binarystream", e.data);
-        }
-}
+//         mediaRecorder.ondataavailable = function (e) {
+//             socket.emit("binarystream", e.data);
+//         }
+// }
 
 const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
 
@@ -259,7 +259,7 @@ const CVideoPlayer = ({
     }
     
     useEffect(() => {
-        connectServer();
+        // connectServer();
     }, [])
     
     useEffect(() => {
@@ -340,7 +340,7 @@ const CVideoPlayer = ({
                     if(refTestVideo.current) {
                         refTestVideo.current.srcObject = mediaStream2;
                         refTestVideo.current.play();
-                        startStream(mediaStream2)
+                        // startStream(mediaStream2)
                     }
                 })
             }
@@ -348,9 +348,9 @@ const CVideoPlayer = ({
       }, [])
       
       useEffect(() => {
-        socket.on('stream_buffer', (buffer: any) => {
-            setImgSrc(buffer)
-        })
+        // socket.on('stream_buffer', (buffer: any) => {
+        //     setImgSrc(buffer)
+        // })
       }, [])
 
       useEffect(() => {
