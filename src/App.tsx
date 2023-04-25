@@ -8,12 +8,16 @@ const App = () => {
   const [inCall, setInCall] = useState(false);
   const [channelName, setChannelName] = useState("va_dev");
 
+  const handleSetCall = (isInCall: boolean) => {
+    setInCall(true)
+  }
+
   return (
     <div>
       {inCall ? (
         <VideoViewContainer setInCall={setInCall} channelName={channelName} />
       ) : (
-        <ChannelForm setInCall={setInCall}/>
+        <ChannelForm setInCall={handleSetCall}/>
       )}
     </div>
   );
