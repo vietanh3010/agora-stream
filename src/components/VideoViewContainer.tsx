@@ -29,8 +29,10 @@ const VideoViewContainer = ({
   const { ready, tracks } = useMicrophoneAndCameraTracks();
  
   useEffect(() => {
-      console.log(clientConfig)
-      console.log(client)
+      console.log({tracks})
+      console.log({ready})
+      console.log({clientConfig})
+      console.log({client})
       if(!appId || !token) return;
     // function to initialise the SDK
     let init = async (name: string) => {
@@ -65,9 +67,9 @@ const VideoViewContainer = ({
           return prevUsers.filter((User) => User.uid !== user.uid);
         });
       });
-      console.log(tracks)
+      console.log({tracks})
       const res = await client.join(appId, name, token, null);
-      console.log(res)
+      console.log({res})
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
 
