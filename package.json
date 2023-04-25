@@ -3,10 +3,13 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
+    "homepage": "https://vietanh3010.github.io/agora-stream/",
     "scripts": {
         "start": "vite",
         "build": "tsc && vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build"
     },
     "dependencies": {
         "@mediapipe/face_mesh": "^0.4.1633559619",
