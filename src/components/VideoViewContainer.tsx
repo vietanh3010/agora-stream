@@ -30,6 +30,7 @@ const VideoViewContainer = ({
  
   useEffect(() => {
       console.log(clientConfig)
+      console.log(client)
       if(!appId || !token) return;
     // function to initialise the SDK
     let init = async (name: string) => {
@@ -64,9 +65,9 @@ const VideoViewContainer = ({
           return prevUsers.filter((User) => User.uid !== user.uid);
         });
       });
-
-      await client.join(appId, name, token, null);
-
+      console.log(tracks)
+      const res = await client.join(appId, name, token, null);
+      console.log(res)
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
 
