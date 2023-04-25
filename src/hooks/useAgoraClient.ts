@@ -22,6 +22,7 @@ type ResultAgoraClient = {
 }
 export default function useAgoraClient(): ResultAgoraClient {
     const { channelInfo } = useAppStore();
+
     return {
         client,
         clientConfig: channelInfo,

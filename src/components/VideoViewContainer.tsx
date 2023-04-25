@@ -29,6 +29,7 @@ const VideoViewContainer = ({
   const { ready, tracks } = useMicrophoneAndCameraTracks();
  
   useEffect(() => {
+      console.log(clientConfig)
       if(!appId || !token) return;
     // function to initialise the SDK
     let init = async (name: string) => {
