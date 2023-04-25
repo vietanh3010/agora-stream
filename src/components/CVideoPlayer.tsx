@@ -279,21 +279,23 @@ const CVideoPlayer = ({
     useEffect(() => {
       
         async function drawFrame() {
-            if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current || !detector) return;
+            if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
             const ctx = streamCanvasImageRef.current.getContext('2d');
             const ctx2 = streamCanvasFaceRef.current.getContext('2d');
             if(!ctx || !ctx2) return;
 
             ctx.drawImage(streamVideoRef.current, 0, 0, streamCanvasImageRef.current.width, streamCanvasImageRef.current.height);
-            const faces = await detector.estimateFaces(streamCanvasImageRef.current);
-            ctx2.clearRect(0 , 0, streamCanvasImageRef.current.width, streamCanvasImageRef.current.height)
-            if(faces[0]) {
-                const {box} = faces[0];
-                const {xMin, xMax, yMin, yMax, width, height} = box;
-                
-                ctx2.beginPath();
-                ctx2.rect(xMin, yMin, width, height);
-                ctx2.stroke();
+            if(detector) {
+                const faces = await detector.estimateFaces(streamCanvasImageRef.current);
+                ctx2.clearRect(0 , 0, streamCanvasImageRef.current.width, streamCanvasImageRef.current.height)
+                if(faces[0]) {
+                    const {box} = faces[0];
+                    const {xMin, xMax, yMin, yMax, width, height} = box;
+                    
+                    ctx2.beginPath();
+                    ctx2.rect(xMin, yMin, width, height);
+                    ctx2.stroke();
+                }
             }
            
             requestAnimationFrame(drawFrame);
@@ -310,7 +312,7 @@ const CVideoPlayer = ({
 
             // sendStream(mediaStream)
     
-            if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current || !detector) return;
+            if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
             streamVideoRef.current.srcObject = mediaStream;
             streamVideoRef.current.onloadedmetadata = () => {
                 if(!streamVideoRef.current || !streamCanvasImageRef.current || !streamCanvasFaceRef.current) return;
