@@ -13,7 +13,7 @@ export default defineConfig(({ command, mode }) => {
             __APP_ENV__: env.APP_ENV,
         },
         build: {
-            outDir: 'build'
+            outDir: 'docs'
         },
         plugins: [react()],
         // css: {
