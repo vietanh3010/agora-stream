@@ -264,8 +264,13 @@ const CVideoPlayer = ({
     
     useEffect(() => {
         async function createDetector() {
-            const newDetector = await faceLandmarksDetection.createDetector(model, detectorConfig);
-            setDetector(newDetector)
+            try {
+                const newDetector = await faceLandmarksDetection.createDetector(model, detectorConfig);
+                setDetector(newDetector)
+            }
+            catch(e) {
+                console.warn(e)
+            }
         }
         createDetector();
 
