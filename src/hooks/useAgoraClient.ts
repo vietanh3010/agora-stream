@@ -1,16 +1,18 @@
 import AgoraRTC, { ClientConfig, createClient, IAgoraRTCClient } from "agora-rtc-react";
+import useAppStore from "../zustand/app.slice";
 
 
 const config: ClientConfig = {
-    mode: "rtc", codec: "vp8",
+    mode: "live", codec: "h264",
 };
 AgoraRTC.setLogLevel(4);
 
-const appId: string = "78362308677b4d78a2438206fb6563a7";
-const token: string | null = "007eJxTYPhz5ZGYkYOyYt4+ZnFuue7FiU/DDR5yLVX3/iQ57aJX8iYFBnMLYzMjYwMLM3PzJJMUc4tEIxNjCyMDs7QkM1Mz40TzK7o2KQ2BjAyPqtoZGRkgEMRnYyhLjE9JLWNgAACv7B1U";
+// const appId: string = "fc5652b73e874187946947d7c1139a6e";
+// const token: string | null = `007eJxTYJhfcv30a9cc351bJ2++zFh46KXolRPtcQoyU1unKMhFHgtQYEhLNjUzNUoyN061MDcxtDC3NDGzNDFPMU82NDS2TDRLneXvntIQyMiwpJOflZEBAkF8NoayxPiU1DIGBgC8vR/G`;
 
 const useClient = createClient(config);
 const client = useClient();
+client.setClientRole('host');
 type ResultAgoraClient = {
     client: IAgoraRTCClient,
     clientConfig: {
@@ -19,13 +21,9 @@ type ResultAgoraClient = {
     }
 }
 export default function useAgoraClient(): ResultAgoraClient {
-    const clientConfig = {
-        appId,
-        token,
-    }
-
+    const { channelInfo } = useAppStore();
     return {
         client,
-        clientConfig
+        clientConfig: channelInfo,
     };
 }

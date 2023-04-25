@@ -15,7 +15,7 @@ const VideoView = ({
 
     return (
         <div>
-            <CVideoPlayer track={tracks[1]}/>
+            <CVideoPlayer track={tracks[1]} users={users}/>
             {
                 users?.filter(user => Boolean(user.videoTrack)).map((user) => 
                     <div>   

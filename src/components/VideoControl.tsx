@@ -1,6 +1,7 @@
 import { ICameraVideoTrack, IMicrophoneAudioTrack } from "agora-rtc-sdk-ng";
 import { memo, useState } from "react";
 import useAgoraClient from "../hooks/useAgoraClient";
+import clsx from "clsx";
 
 type VideoControlProps = {
     tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
@@ -41,16 +42,22 @@ const VideoControl = ({
     };
   
     return (
-      <div className="controls">
-        <button className={trackState.audio ? "on" : ""}
-          onClick={() => mute("audio")}>
+      <div className="flex space-x-2 py-1">
+        <button 
+            className={clsx(trackState.audio && "on", "btn btn-sm")}
+            onClick={() => mute("audio")}>
           {trackState.audio ? "MuteAudio" : "UnmuteAudio"}
         </button>
-        <button className={trackState.video ? "on" : ""}
-          onClick={() => mute("video")}>
+        <button 
+            className={clsx(trackState.video && "on", "btn btn-sm")}
+            onClick={() => mute("video")}>
           {trackState.video ? "MuteVideo" : "UnmuteVideo"}
         </button>
-        {<button onClick={() => leaveChannel()}>Leave</button>}
+        <button
+            className="btn btn-sm"
+            onClick={() => leaveChannel()}>
+            Leave
+        </button>
       </div>
     );
   };
