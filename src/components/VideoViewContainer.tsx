@@ -29,6 +29,7 @@ const VideoViewContainer = ({
   const { ready, tracks } = useMicrophoneAndCameraTracks();
  
   useEffect(() => {
+      if(!appId || !token) return;
     // function to initialise the SDK
     let init = async (name: string) => {
       client.on("user-published", async (user, mediaType) => {
@@ -75,7 +76,7 @@ const VideoViewContainer = ({
       init(channelName);
     }
 
-  }, [channelName, client, ready, tracks]);
+  }, [channelName, client, ready, tracks, appId, token]);
 
   return (
         <div>
