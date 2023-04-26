@@ -236,7 +236,7 @@ const CVideoPlayer = ({
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': authorizationField,
-                    'X-Request-ID': 'abcd1234',
+                    'X-Request-ID': new Date().getTime(),
                 }
             }
         )
@@ -248,7 +248,7 @@ const CVideoPlayer = ({
                 {
                     headers: {
                         'Authorization': authorizationField,
-                        'X-Request-ID': 'abcd1234',
+                        'X-Request-ID': new Date().getTime(),
                     }
                 }
             )

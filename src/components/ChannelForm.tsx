@@ -1,4 +1,4 @@
-import { memo } from "react"
+import { memo, useEffect } from "react"
 import { Controller, useForm } from "react-hook-form";
 import { ChannelFormType } from "../types/types";
 import useAppStore from "../zustand/app.slice";
@@ -8,18 +8,32 @@ type ChannelFormProps = {
 }
 
 
-const FORM_DEFINE: Array<keyof ChannelFormType> = ['appId', 'token']
+const FORM_DEFINE: Array<keyof ChannelFormType> = ['appId', 'token', 'channelName', 'customerKey', 'customerSecret']
 
 const ChannelForm = ({
     setInCall
 }: ChannelFormProps): JSX.Element => {
-    const { register, handleSubmit, watch, formState: { errors }, control } = useForm<ChannelFormType>();
+    const { handleSubmit, formState: { errors }, control, setValue } = useForm<ChannelFormType>();
     const {setChannelInfo}  = useAppStore();
+
+    useEffect(() => {
+        FORM_DEFINE.forEach(key => {
+            setValue(key, localStorage.getItem(key) ?? '')
+        })
+    }, [])
+    
     
     const onSubmit = (data: ChannelFormType) => {
         setInCall(true);
         setChannelInfo(data);
+        FORM_DEFINE.forEach(key => {
+            if(key in data) {
+                localStorage.setItem(key, data[key]);
+            }
+        })
     }
+
+
     return (
         <div>
             <form 
@@ -47,7 +61,7 @@ const ChannelForm = ({
                                         type="text" 
                                         key={key}
                                         placeholder={key}
-                                        className="input input-bordered w-full max-w-xs input-sm" />
+                                        className="input input-bordered w-full max-w-lg input-sm" />
                                 )}
                                 />
                             {
@@ -57,6 +71,10 @@ const ChannelForm = ({
                         </div>
                     )
                 }
+                <div>
+                    <span>Get Customer Key and Customer Secret from </span>
+                    <a href="https://console.agora.io/restfulApi" target="_blank">https://console.agora.io/restfulApi</a>
+                </div>
                 <div>
                     <button
                         type="submit"

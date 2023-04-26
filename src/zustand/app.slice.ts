@@ -10,7 +10,7 @@ type AppAction = {
 }
 
 const useAppStore = create<AppState & AppAction>((set) => ({
-    channelInfo: { appId: '', token: '' },
+    channelInfo: { appId: '', token: '', channelName: '', customerKey: '', customerSecret: '' },
     setChannelInfo: (channelInfo: ChannelFormType) => set(() => ({ channelInfo })),
 
 }))

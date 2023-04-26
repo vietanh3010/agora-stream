@@ -28,12 +28,6 @@ export default function useAgoraClient(): ResultAgoraClient {
 
     return {
         client,
-        clientConfig: {
-            ...channelInfo,
-            customerKey: 'fc9d426e7413446f8cef04949c346b37',
-            customerSecret: 'adc2b60c5b8e4eb690204751bf80c911',
-            channelName: 'va_dev',
-        },
-
+        clientConfig: channelInfo,
     };
 }
