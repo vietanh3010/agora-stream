@@ -1,7 +1,7 @@
 {
     "headers": [
         {
-            "source": "/api.agora.io/*",
+            "source": "/src/components/(*.tsx)",
             "headers": [
                 {
                     "key": "Access-Control-Allow-Credentials",
