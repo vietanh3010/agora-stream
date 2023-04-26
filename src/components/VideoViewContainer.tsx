@@ -82,6 +82,7 @@ const VideoViewContainer = ({
 
   return (
         <div>
+            {(!ready || !tracks) && <span>No camera detected</span>}
             {ready && tracks && (
                 <VideoControl tracks={tracks} setStart={setStart} setInCall={setInCall} />
             )}

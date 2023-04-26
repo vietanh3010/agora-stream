@@ -8,7 +8,13 @@ type ChannelFormProps = {
 }
 
 
-const FORM_DEFINE: Array<keyof ChannelFormType> = ['appId', 'token', 'channelName', 'customerKey', 'customerSecret']
+const FORM_DEFINE: Array<keyof ChannelFormType> = [
+    'appId', 
+    'token', 
+    'channelName', 
+    'customerKey', 
+    'customerSecret'
+]
 
 const ChannelForm = ({
     setInCall
