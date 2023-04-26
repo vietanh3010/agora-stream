@@ -7,7 +7,6 @@ import useAgoraClient from "./hooks/useAgoraClient";
 
 const App = () => {
   const [inCall, setInCall] = useState(false);
-  const [channelName, setChannelName] = useState("va_dev");
   const {client, clientConfig} = useAgoraClient();
   
   const handleSetCall = (isInCall: boolean) => {
@@ -17,7 +16,7 @@ const App = () => {
   return (
     <div>
       {inCall && clientConfig.appId && clientConfig.token ? (
-        <VideoViewContainer setInCall={setInCall} channelName={channelName} />
+        <VideoViewContainer setInCall={setInCall} />
       ) : (
         <ChannelForm setInCall={handleSetCall}/>
       )}

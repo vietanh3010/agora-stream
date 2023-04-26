@@ -8,7 +8,6 @@ import VideoView from "./VideoView";
 
 type VideoViewContainerProps = {
     setInCall: React.Dispatch<React.SetStateAction<boolean>>;
-    channelName: string;
 }
 
 // the create methods in the wrapper return a hook
@@ -18,13 +17,12 @@ const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
 
 const VideoViewContainer = ({
     setInCall,
-    channelName
 }: VideoViewContainerProps): JSX.Element => {
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
   // using the hook to get access to the client object
   const {client, clientConfig} = useAgoraClient();
-  const {appId, token} = clientConfig;
+  const {appId, token, channelName} = clientConfig;
   // ready is a state variable, which returns true when the local tracks are initialized, untill then tracks variable is null
   const { ready, tracks } = useMicrophoneAndCameraTracks();
  

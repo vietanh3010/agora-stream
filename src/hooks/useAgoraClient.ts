@@ -17,7 +17,10 @@ type ResultAgoraClient = {
     client: IAgoraRTCClient,
     clientConfig: {
         appId: string,
-        token: string | null
+        token: string | null,
+        customerKey: string,
+        customerSecret: string,
+        channelName: string,
     }
 }
 export default function useAgoraClient(): ResultAgoraClient {
@@ -25,6 +28,12 @@ export default function useAgoraClient(): ResultAgoraClient {
 
     return {
         client,
-        clientConfig: channelInfo,
+        clientConfig: {
+            ...channelInfo,
+            customerKey: 'fc9d426e7413446f8cef04949c346b37',
+            customerSecret: 'adc2b60c5b8e4eb690204751bf80c911',
+            channelName: 'va_dev',
+        },
+
     };
 }

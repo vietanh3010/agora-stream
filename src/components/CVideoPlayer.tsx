@@ -102,6 +102,7 @@ const CVideoPlayer = ({
     const refTestVideo = useRef<HTMLVideoElement | null>(null);
     const [detector, setDetector] = useState<faceLandmarksDetection.FaceLandmarksDetector | null>(null);
     const {client, clientConfig} = useAgoraClient();
+    const {customerKey, customerSecret, channelName} = clientConfig;
     const [imgSrc, setImgSrc] = useState<string>('');
     const startTranscoding = useCallback(async () => {
         // const liveTranscoding: any = {
@@ -142,8 +143,6 @@ const CVideoPlayer = ({
         const region = 'ap'; 
         const appId = clientConfig.appId;
         const regionHintIp = RTMP_YOUTUBE//'rtmp://localhost:1935/live';
-        const customerKey = "a74c2d4e7f634ac6af6761f7ebe4d329";
-        const customerSecret = "3cbd4759b526423e805da398156572a8";
         const plainCredential = `${customerKey}:${customerSecret}`;
         const encodedCredential = btoa(plainCredential)//Buffer.from(plainCredential).toString('base64')
         const authorizationField = "Basic " + encodedCredential;
@@ -166,7 +165,7 @@ const CVideoPlayer = ({
                 "converter": {
                     "name": "show68_vertical",
                     "transcodeOptions": {
-                        "rtcChannel": "va_dev",
+                        "rtcChannel": channelName,
                         "audioOptions": {
                             "codecProfile": "HE-AAC",
                             "sampleRate": 48000,
@@ -227,14 +226,12 @@ const CVideoPlayer = ({
         const region = 'ap'; 
         const appId = clientConfig.appId;
         const regionHintIp = RTMP_YOUTUBE//'rtmp://localhost:1935/live';
-        const customerKey = "c945f583e6ee485bad3b576d38caba5f";
-        const customerSecret = "f9d0f18c220748b4962d2de0d3f173b8";
         const plainCredential = `${customerKey}:${customerSecret}`;
         const encodedCredential = btoa(plainCredential)//Buffer.from(plainCredential).toString('base64')
         const authorizationField = "Basic " + encodedCredential
 
         const listAllConverter = await axios.get(
-            `https://api.agora.io/v1/projects/${appId}/channels/${"va_dev"}/rtmp-converters`,
+            `https://api.agora.io/v1/projects/${appId}/channels/${channelName}/rtmp-converters`,
             {
                 headers: {
                     'Content-Type': 'application/json',
