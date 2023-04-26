@@ -1,7 +1,7 @@
 {
     "headers": [
         {
-            "source": "/api.agora.io/",
+            "source": "/api.agora.io/*",
             "headers": [
                 {
                     "key": "Access-Control-Allow-Credentials",
